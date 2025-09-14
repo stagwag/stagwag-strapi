@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "registrars",
+  "info": {
+    "singularName": "registrar",
+    "pluralName": "registrars",
+    "displayName": "Registrar"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "uuid": {
+      "type": "customField",
+      "customField": "plugin::strapi-advanced-uuid.uuid",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "ipos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ipo.ipo",
+      "mappedBy": "registrar"
+    }
+  }
+}

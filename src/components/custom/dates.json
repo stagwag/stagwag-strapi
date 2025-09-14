@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_custom_dates",
+  "info": {
+    "displayName": "dates",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {
+    "open": {
+      "type": "date"
+    },
+    "close": {
+      "type": "date"
+    },
+    "allotment": {
+      "type": "date"
+    },
+    "listing": {
+      "type": "date"
+    }
+  },
+  "config": {}
+}

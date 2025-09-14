@@ -373,6 +373,110 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiIpoIpo extends Struct.CollectionTypeSchema {
+  collectionName: 'ipos';
+  info: {
+    displayName: 'IPO';
+    pluralName: 'ipos';
+    singularName: 'ipo';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    applicationAmount: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    CompanyName: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dates: Schema.Attribute.Component<'custom.dates', false>;
+    gmp: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::ipo.ipo'> &
+      Schema.Attribute.Private;
+    lotQty: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    price: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    publishedAt: Schema.Attribute.DateTime;
+    registrar: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::registrar.registrar'
+    >;
+    retailQuota: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 100;
+          min: 0;
+        },
+        number
+      >;
+    slug: Schema.Attribute.UID<'CompanyName'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    uuid: Schema.Attribute.UID &
+      Schema.Attribute.Required &
+      Schema.Attribute.CustomField<'plugin::strapi-advanced-uuid.uuid'>;
+  };
+}
+
+export interface ApiRegistrarRegistrar extends Struct.CollectionTypeSchema {
+  collectionName: 'registrars';
+  info: {
+    displayName: 'Registrar';
+    pluralName: 'registrars';
+    singularName: 'registrar';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ipos: Schema.Attribute.Relation<'oneToMany', 'api::ipo.ipo'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::registrar.registrar'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    uuid: Schema.Attribute.UID &
+      Schema.Attribute.Required &
+      Schema.Attribute.CustomField<'plugin::strapi-advanced-uuid.uuid'>;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -828,7 +932,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -869,6 +972,9 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
+    uuid: Schema.Attribute.UID &
+      Schema.Attribute.Required &
+      Schema.Attribute.CustomField<'plugin::strapi-advanced-uuid.uuid'>;
   };
 }
 
@@ -882,6 +988,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::ipo.ipo': ApiIpoIpo;
+      'api::registrar.registrar': ApiRegistrarRegistrar;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
